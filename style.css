@@ -5,6 +5,51 @@ div.side{
 	float: left;
 	background: #6E757C;
 }
+div#popupContact {
+position:absolute;
+left:50%;
+top:17%;
+margin-left:-202px;
+font-family:'Raleway',sans-serif
+}
+
+.selectname
+{
+	width: 100%;
+	
+}
+.valuenum
+{
+	width: 100%;
+	
+}
+.itemchoose
+{
+	border: none;
+	width:50%;
+	
+}
+#poppy {
+width:100%;
+height:100%;
+opacity:.96;
+top:0;
+left:0;
+display:none;
+position:fixed;
+background-color:#313131;
+overflow:auto
+}
+
+.form2 {
+max-width:300px;
+min-width:250px;
+padding:10px 50px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+background-color:#fff
+}
 
 #side a {
 	color: #FFFFFF;
@@ -37,7 +82,7 @@ ul,li {
 
 
 /*global*/
-div.body {
+div.body2 {
 	border-width:5px;
 	height:auto;
 	width:75%;
@@ -47,11 +92,18 @@ div.body {
 	left:20%;
 	float: right;
 	min-height: 100%;
-	z-index: -1;
+	
 	min-height:90%;
 }
 
 body{
+	background-image:url(img/background.png);
+	padding:0;
+	margin:0;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+
+.addsalestitle{
 	background-image:url(img/background.png);
 	padding:0;
 	margin:0;

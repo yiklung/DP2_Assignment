@@ -72,7 +72,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 			if(@mysql_num_rows($queryResult) == NULL)
 			{
 				$strSql = "CREATE TABLE $tableName (sales_id INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				sales_name VARCHAR(50) NOT NULL, sales_date VARCHAR(50) NOT NULL)";
+				sales_name VARCHAR(50) NOT NULL, sales_date DATE NOT NULL)";
 				$queryResult = @mysql_query($strSql, $dbConx);
 				//created item stock table
 				//make the item id change to 1000 increase by 1 everytime

@@ -7,8 +7,7 @@
 <script>
 function check_empty()
 {
-	if (document.getElementById('name').value == "" || document.getElementById('email').value == ""||
-	document.getElementById('msg').value =="")
+	if (document.getElementById('name').value == "" || document.getElementById('date').value == "")
 	{
 		alert ("Fill All Fields");
 	}
@@ -41,7 +40,7 @@ function div_hide()
 <div class="side">
 	<ul id="side">
 		<li><a href="home.php">Home</a></li>
-		<li><a href="sale.php">Sales</a></li>
+		<li><a href="sales.php">Sales</a></li>
 		<li><a href="item.php">Inventory</a></li>
 		<li><a href="item.php">Customers</a></li>
 		<li><a href="item.php">Suppliers</a></li>
@@ -58,29 +57,128 @@ function div_hide()
  <hr>
  <input id = "name" name ="name" placeholder ="Name" type = "text">
  <input id = "date" name ="date" placeholder = "Date" type ="date">
- <input id = "item" name = "item" placeholder = "item" type ="text">
- <a href = "javascript:%20check_empty()" id = "submit" class ="add"> Save </a>
+ 
+ <div id = "dynamicInput">
+<?php
+$dbServer='localhost';
+$dbUserName = 'root';
+$dbPassword = '';
+$dbName = 'srsphp';
+$dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
+mysql_select_db($dbName,$dbConx);
+
+$sqlstr = "SELECT item_name FROM item";
+$medata = mysql_query($sqlstr,$dbConx);
+
+echo "<table><tr class ='itemchoose'><td class ='itemchoose'>Item 1 <select class = 'selectname' name ='select' id= 'select'>";
+$option='';
+while($rs = mysql_fetch_array($medata))
+	{
+		$option.='<option value ="'.$rs["item_name"].'">'.$rs["item_name"].'</option>';
+	}
+	$option.='</select></td><td class ="itemchoose">';
+	$option2 ='Quantity<select class ="valuenum" name ="value" id="value">';
+	$option3='<option value ="1">1</option><option value ="2">2</option><option value ="3">3</option><option value ="4">4</option><option value ="5">5</option></select></td></tr></table>';
+echo $option;
+echo $option2;
+echo $option3;
+
+
+ ?>
+ </div>
+ 
+ <script>
+ var counter = 1;
+ var limit = 10;
+ var js_data= '<?php echo $option; ?>';
+ var js_data2 = '<?php echo $option3;?>';
+ 
+ function addInput(divName){
+		if (counter == limit)
+		{
+			alert("Maximum Item Per Cart");
+		}
+		else
+		{
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML = '<table><tr class ="itemchoose"><td class ="itemchoose">Item ' + (counter+1)+' <select class = "selectname" name="select'+(counter+1)+'" id="select'+(counter+1)+'">'+js_data+'Quantity<select class ="valuenum" name ="value'+(counter+1)+'" id="value'+(counter+1)+'">'+js_data2;
+			document.getElementById(divName).appendChild(newdiv);
+			counter++;
+		}
+	}
+
+ </script>
+ 
+ 
+ <input type = "button" value = "Add Item" onClick ="addInput('dynamicInput');">
+ <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save </a>
  </form>
  </div>
 </div>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+	
+	$name = $_POST["name"];
+	$date = $_POST["date"];
+	
+	$sqlstr = "INSERT INTO sales(sales_name,sales_date) VALUES
+	('$name','$date')";
+	mysql_query($sqlstr,$dbConx);
+	
+	$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
+	$medata = mysql_query($sqlstr,$dbConx);
+	
+	$solditem = $_POST["select"];
+	$soldquan = $_POST["value"];
+	
+	$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
+	VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem','$soldquan')";
+	mysql_query($sqlstr,$dbConx);
+	
+	$x=2;
+	while($x<=10)
+	{   
+        
+		@$solditem2 = $_POST["select".$x.""];
+		@$soldquan2 = $_POST["value".$x.""];
+		if(isset($solditem2))
+		{
+		$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
+		VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem2','$soldquan2')";
+		mysql_query($sqlstr,$dbConx);
+		}
+		else{}
+		$x++;
+	}
+}
+else
+{
+	
+}
+?>
 	<h1> Sales </h1>
 	<hr />
 	<br><br>
 	<table>
-		<tr>
-			<th> Customer Name </th>
-			<th> Date </th>
-			<th> Sales ID </th>
-		</tr>
-		<tr> <!--Append database data, need to modify to allow for selecting-->
-			<td>ENTER CUSTOMER NAME HERE</td>
-			<td>ENTER DATE HERE</td>
-			<td>SALES ID</td>
-		</tr>	
+	<tr><td> Customer Name: </td>
+	<td> Date: </td>
+	<td> Sales ID: </td></tr>
+	
+<?php
+$sqlstr = "SELECT * FROM sales";
+$medata = mysql_query($sqlstr,$dbConx);
+while($record = mysql_fetch_array($medata))
+{
+		echo "<tr><td>".$record['sales_name']."</td>";
+		echo "<td>".$record['sales_date']."</td>";
+		echo "<td>".$record['sales_id']."</td></tr>";
+}
+?>
 	</table>
 	<br>
 	<br>
-	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php->
+	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php-->
 	<button class="view"> View selected transaction </button> <!--Add Javascript here to add more items-->
 </div>
 <div class="btm">
