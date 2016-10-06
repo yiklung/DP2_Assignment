@@ -41,10 +41,10 @@ function div_hide()
 	<ul id="side">
 		<li><a href="home.php">Home</a></li>
 		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href="item.php">Customers</a></li>
-		<li><a href="item.php">Suppliers</a></li>
-		<li><a href="item.php">Sales Report</a></li>
+		<li><a href="inventory.php">Inventory</a></li>
+		<li><a href="#">Customers</a></li>
+		<li><a href="#">Suppliers</a></li>
+		<li><a href="#">Sales Report</a></li>
 		<li><a href="#" class="last">Contact</a></li>
 	</ul>
 </div>
