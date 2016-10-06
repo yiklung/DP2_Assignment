@@ -1,23 +1,16 @@
-/*sidebar*/
+﻿/*sidebar*/
 div.side{
 	width:18%;
 	min-height:90%;
 	float: left;
 	background: #6E757C;
-	/*disable text highlight*/
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-	-khtml-user-select: none;    /* Konqueror */
-	-moz-user-select: none;      /* Firefox */
-	-ms-user-select: none;       /* Internet Explorer/Edge */
 }
-
 div#popupContact {
-	position:absolute;
-	left:50%;
-	top:17%;
-	margin-left:-202px;
-	font-family:'Raleway',sans-serif
+position:absolute;
+left:50%;
+top:17%;
+margin-left:-202px;
+font-family:'Raleway',sans-serif
 }
 
 .selectname
@@ -37,25 +30,25 @@ div#popupContact {
 	
 }
 #poppy {
-	width:100%;
-	height:100%;
-	opacity:.96;
-	top:0;
-	left:0;
-	display:none;
-	position:fixed;
-	background-color:#313131;
-	overflow:auto
+width:100%;
+height:100%;
+opacity:.96;
+top:0;
+left:0;
+display:none;
+position:fixed;
+background-color:#313131;
+overflow:auto
 }
 
 .form2 {
-	max-width:300px;
-	min-width:250px;
-	padding:10px 50px;
-	border:2px solid gray;
-	border-radius:10px;
-	font-family:raleway;
-	background-color:#fff
+max-width:300px;
+min-width:250px;
+padding:10px 50px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+background-color:#fff
 }
 
 #side a {
@@ -99,6 +92,7 @@ div.body2 {
 	left:20%;
 	float: right;
 	min-height: 100%;
+	
 	min-height:90%;
 }
 
@@ -107,12 +101,6 @@ body{
 	padding:0;
 	margin:0;
 	font-family: Tahoma, Geneva, sans-serif;
-	/*disable drag*/
-	-webkit-user-drag: none;	/* iOS Safari */
-	-khtml-user-drag: none;		/* Chrome/Safari/Opera */
-	-moz-user-drag: none;		/* Konqueror */
-	-o-user-drag: none;			/* Firefox */
-	user-drag: none;			/* Internet Explorer/Edge */
 }
 
 .addsalestitle{
@@ -129,24 +117,10 @@ hr {
 	background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
 	background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
 	background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
-	cursor: default;
-	/*disable text highlight*/
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-	-khtml-user-select: none;    /* Konqueror */
-	-moz-user-select: none;      /* Firefox */
-	-ms-user-select: none;       /* Internet Explorer/Edge */
  }
 
 h1 {
 	color:#219DE8;
-	cursor: default;
-	/*disable text highlight*/
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-	-khtml-user-select: none;    /* Konqueror */
-	-moz-user-select: none;      /* Firefox */
-	-ms-user-select: none;       /* Internet Explorer/Edge */
 }
  
 div.top{
@@ -190,6 +164,20 @@ div.btm{
     cursor: pointer;
 }
 
+.delet {
+    background-color: #F15555;
+    border: none;
+	border-radius: 6px;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .view {
     background-color: #76DF66;
     border: none;
@@ -218,67 +206,8 @@ div.btm{
     cursor: pointer;
 }
 
-.delete{
-    background-color: #F64444;
-    border: none;
-	border-radius: 6px;
-    color: white;
-    padding: 10px 200px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-table{
-	border-collapse: collapse;
-}
-
 th, td {
 	padding: 10px;
 	margin: 0;
-	border: solid 1px #000000;
-}
-
-th {
-	background-color: #7FBFE3;
-	color: white;
-	cursor: default;
-	/*disable text highlight*/
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-	-khtml-user-select: none;    /* Konqueror */
-	-moz-user-select: none;      /* Firefox */
-	-ms-user-select: none;       /* Internet Explorer/Edge */
-}
-
-
-td {
-	cursor: pointer;
-}
-
-.selected {
-	background-color: #C0FFB7;
-	color:#1017F6;
-}
-
-.content {
-	overflow: auto;
-	height: 20vw;
-	width: auto;
-	background: rgb(236, 248, 254); /* For browsers that don't support rgba */
-    background: rgba(236, 248, 254, 0.5);
-	padding: 1vw;
-    border-radius: 2px;
-}
-
-button{
-	/*disable text highlight*/
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-	-khtml-user-select: none;    /* Konqueror */
-	-moz-user-select: none;      /* Firefox */
-	-ms-user-select: none;       /* Internet Explorer/Edge */
+	border: solid ;
 }

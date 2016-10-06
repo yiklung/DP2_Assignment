@@ -1,9 +1,8 @@
-﻿<DOCTYPE!>
+<DOCTYPE!>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
-<Title>Sales Module</Title>
-
+<Title>Modify Sales</Title>
 <script>
 function check_empty()
 {
@@ -17,18 +16,7 @@ function check_empty()
 		alert("Form Submitted Successfully");
 	}
 }
-
-function div_show()
-{
-	document.getElementById('poppy').style.display = "block";
-}
-function div_hide()
-{
-	document.getElementById('poppy').style.display = "none";
-}
-
- </script>
-
+</script>
 </head>
 <body>
 
@@ -46,18 +34,13 @@ function div_hide()
 		<li><a href="contact.php" class="last">Contact</a></li>
 	</ul>
 </div>
-<div class="body2"> 
-<div id = "poppy">
- <div id ="popupContact">
- <form class ="form2" action ="sales.php" id = "form" method = "post" name = "form">
- <button  type ="button" class ="add" id = "close" onclick = "div_hide()">Close</button>
- <h2 class = "addsalestitle">Add Sales </h2>
- <hr>
+<div class="body2">
+<form class ="form2" action ="modify.php" id = "form" method = "post" name = "form">
+ <input id = "saleid" name ="saleid" placeholder ="Sales ID" type = "text"> 
  <input id = "name" name ="name" placeholder ="Name" type = "text">
  <input id = "date" name ="date" placeholder = "Date" type ="date">
- 
- <div id = "dynamicInput">
-<?php
+ <div id ="dynamicInput">
+ <?php
 $dbServer='localhost';
 $dbUserName = 'root';
 $dbPassword = '';
@@ -83,6 +66,7 @@ echo $option3;
 
 
  ?>
+ 
  </div>
  
  <script>
@@ -109,24 +93,42 @@ echo $option3;
  
  
  <input type = "button" value = "Add Item" onClick ="addInput('dynamicInput');">
- <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save </a>
+ <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save Changes </a>
+ <input type = "submit" value = "Delete" id = "delethis" name = "delethis" class ="delet">
  </form>
- </div>
 </div>
+
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
+if( isset( $_REQUEST['delethis'] ))
+{
+	$saleid = $_POST["saleid"];
+	
+	$sqlstr = "DELETE FROM sold WHERE cust_id='$saleid'";
+	$medata = mysql_query($sqlstr,$dbConx);
+	
+	$sqlstr = "DELETE FROM sales WHERE sales_id='$saleid'";
+	$medata = mysql_query($sqlstr,$dbConx);
+}
+else
 {
 	
+}
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+	$saleid = $_POST["saleid"];
 	$name = $_POST["name"];
 	$date = $_POST["date"];
 	
-	$sqlstr = "INSERT INTO sales(sales_name,sales_date) VALUES
-	('$name','$date')";
+	$sqlstr = "UPDATE sales SET sales_name ='$name',sales_date='$date'
+	WHERE sales_id = '$saleid'";
+	
 	mysql_query($sqlstr,$dbConx);
 	
 	$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
 	$medata = mysql_query($sqlstr,$dbConx);
 	
+	$sqlstr = "DELETE FROM sold WHERE cust_id='$saleid'";
+	$medata = mysql_query($sqlstr,$dbConx);
 	$solditem = $_POST["select"];
 	$soldquan = $_POST["value"];
 	
@@ -149,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		else{}
 		$x++;
 	}
+	header('Location: sales.php');
 	unset($_POST);
 }
 else
@@ -156,43 +159,7 @@ else
 	
 }
 ?>
-	<h1> Sales </h1>
-	<hr />
-	<br><br>
-	<table>
-	<tr><td> Customer Name: </td>
-	<td> Date: </td>
-	<td> Sales ID: </td>
-	<td> Item/Quantity ---> </td>
-	</tr>
-	
-<?php
-$sqlstr = "SELECT * FROM sales";
-$medata = mysql_query($sqlstr,$dbConx);
-while($record = mysql_fetch_array($medata))
-{
-		echo "<tr><td>".$record['sales_name']."</td>";
-		echo "<td>".$record['sales_date']."</td>";
-		echo "<td>".$record['sales_id']."</td>";
-		$sqlitem = "SELECT * FROM sold WHERE cust_id =".$record['sales_id'];
-		$datatwo = mysql_query($sqlitem,$dbConx);
-		while($recorditem = mysql_fetch_array($datatwo))
-		{	
-			
-			echo "<td>".$recorditem['sold_item']."</td>";
-			echo "<td>".$recorditem['sold_itemquan']."</td>";
-			
-		}
-		echo "</tr>";
-}
-?>
-	</table>
-	<br>
-	<br>
-	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php-->
-	<a href="modify.php" class="view">Modify Sales</a>
-	
-</div>
+
 <div class="btm">
  &lt; Footer &gt; <!--Change to include student IDs?-->
 </div>

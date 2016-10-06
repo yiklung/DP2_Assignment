@@ -30,7 +30,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 			if(@mysql_num_rows($queryResult) == NULL)
 			{
 				$strSql = "CREATE TABLE $tableName (item_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				item_name VARCHAR(50) NOT NULL, item_price INT NOT NULL,
+				item_name VARCHAR(50) NOT NULL, item_price DOUBLE NOT NULL,
 				item_stock INT NOT NULL)";
 				$queryResult = @mysql_query($strSql, $dbConx);
 				//created item stock table
@@ -161,7 +161,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 	}
 	else
 	{
-		echo "<p>Database Ready". mysql_errno().":". mysql_error()."</p>";
+		
 	}
 
 	//if unable to connect 

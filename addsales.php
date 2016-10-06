@@ -1,7 +1,7 @@
 ﻿<html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
-<Title>View / Modify Sales</Title>
+<Title>Add Sales</Title>
 </head>
 <body>
 
@@ -15,28 +15,23 @@ function myFunction() {
 <form action = "salesview.php" method = "post">
 <h2 class = "but1"><input class = "baton2" type = "submit" name = "listall" value = "List All"></h1>
 </form>	
-	<h1> View / Modify transaction </h1>
+	<h1> Add new sales transaction </h1>
 	<hr />
 	<form action="sale.php" method="get" name="login" onsubmit="myFunction(); return false;">
-		<br>
-		Customer Name:<br>
-		<input type="text" name="">
-		<br><br>
-		Date:<br>
-		<input type="date" name="">
-		<br><br>
-		Item 1: 
+	  Customer Name:<br>
+	  <input type="text" name="">
+	  <br><br>
+	  Date:<br>
+	  <input type="date" name="">
+	  <br><br>
+	  Item 1: 
 		<select>
 		  <option value="1">1</option>
 		  <option value="2">2</option>
 		  <option value="3">3</option>
 		  <option value="4">4</option>
 		</select>
-		<button class="add"> Add more items </button> <!--Add Javascript here to add more items-->
-		<br><br>
-		<button class="save"> Save </a>
-		<button class="delete"> Delete </button> <!--Add Javascript here to confirm deletion-->
-		<a href="sales.php" class="cancel"> Cancel </a>
+	  <button class="add"> Add more </button> <!--Add Javascript here to add more items-->
 	  <br><br>
 	  <input type="submit" value="Add Sales" class="submit">
 	</form>
