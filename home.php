@@ -7,12 +7,11 @@
 </head>
 <body>
 <?php
-include 'databasecreate.php';
+	include 'databasecreate.php';
 ?>
 <div class="top">
-	<img></img>Welcome, &lt;User&gt; <!--Have php check if used is logged in-->
+	<img></img>Welcome, please <a href="#">login</a>. <!--Have php check if used is logged in-->
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
-	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
 <div class="side">
 	<ul id="side">
@@ -27,9 +26,24 @@ include 'databasecreate.php';
 </div>
 <div class="body2"> 
 
+	<h1> Login </h1>
+	<hr />
+	<br><br>
+	
+	<form>
+	  Username:<br>
+	  <input type="text" name="">
+	  <br><br>
+	  Password:<br>
+	  <input type="text" name="">
+	  <br><br>
+	<input type="submit" value="Login" class="submit">
+	</form>
+		
 </div>
+
 <div class="btm">
- &lt; Footer &gt; <!--Change to include student IDs?-->
+ &lt; Footer &gt; <!--Change to include student IDs?-->	
 </div>
 </body>
 </html>
