@@ -1,4 +1,4 @@
-﻿<DOCTYPE!>
+<DOCTYPE!>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -106,7 +106,6 @@ echo $option3;
 			counter++;
 		}
 	}
-
  </script>
  
  
@@ -160,22 +159,36 @@ else
 	<h1> Sales </h1>
 	<hr />
 	<br><br>
-	<table>
-	<tr><td> Customer Name: </td>
-	<td> Date: </td>
-	<td> Sales ID: </td></tr>
-	
-<?php
-$sqlstr = "SELECT * FROM sales";
-$medata = mysql_query($sqlstr,$dbConx);
-while($record = mysql_fetch_array($medata))
-{
-		echo "<tr><td>".$record['sales_name']."</td>";
-		echo "<td>".$record['sales_date']."</td>";
-		echo "<td>".$record['sales_id']."</td></tr>";
-}
-?>
-	</table>
+	<div class="content">
+		<table id="selectable">
+			<tr>
+				<th> Customer Name: </th>
+				<th> Date: </th>
+				<th> Sales ID: </th>
+			</tr>
+			
+			<?php
+			$sqlstr = "SELECT * FROM sales";
+			$medata = mysql_query($sqlstr,$dbConx);
+			while($record = mysql_fetch_array($medata))
+			{
+					echo "<tr><td>".$record['sales_name']."</td>";
+					echo "<td>".$record['sales_date']."</td>";
+					echo "<td>".$record['sales_id']."</td></tr>";
+			}
+			?>
+		</table>
+	</div>
+	<script>	
+			$("#selectable tr").click(function(){
+				var value=$(this).find('td:first').html();
+				
+				if (value != undefined) {
+					$(this).addClass('selected').siblings().removeClass('selected'); 
+					alert(value); // Replace this to a function that opens the view page;
+				}    
+			});
+	</script>
 	<br>
 	<br>
 	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php-->
