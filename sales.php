@@ -45,7 +45,7 @@ function div_hide()
 		<li><a href="#">Customers</a></li>
 		<li><a href="#">Suppliers</a></li>
 		<li><a href="#">Sales Report</a></li>
-		<li><a href="#" class="last">Contact</a></li>
+		<li><a href="#">Contact</a></li>
 	</ul>
 </div>
 <div class="body2"> 
