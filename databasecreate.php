@@ -29,7 +29,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 		 
 			if(@mysql_num_rows($queryResult) == NULL)
 			{
-				$strSql = "CREATE TABLE $tableName (item_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				$strSql = "CREATE TABLE $tableName (item_id INT(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				item_name VARCHAR(50) NOT NULL, item_price DOUBLE NOT NULL,
 				item_stock INT NOT NULL)";
 				$queryResult = @mysql_query($strSql, $dbConx);
@@ -40,7 +40,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 				if($queryResult)
 				{
 					echo "<p>Table successfully created </p>";
-					$strSql = "ALTER TABLE item AUTO_INCREMENT = 1000";
+					$strSql = "ALTER TABLE item AUTO_INCREMENT = 5000";
 					$queryResult = @mysql_query ($strSql, $dbConx);
 					if($queryResult)
 					{
@@ -71,7 +71,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 		 
 			if(@mysql_num_rows($queryResult) == NULL)
 			{
-				$strSql = "CREATE TABLE $tableName (sales_id INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				$strSql = "CREATE TABLE $tableName (sales_id INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				sales_name VARCHAR(50) NOT NULL, sales_date DATE NOT NULL)";
 				$queryResult = @mysql_query($strSql, $dbConx);
 				//created item stock table
@@ -81,7 +81,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 				if($queryResult)
 				{
 					echo "<p>Table successfully created </p>";
-					$strSql = "ALTER TABLE sales AUTO_INCREMENT = 1000";
+					$strSql = "ALTER TABLE sales AUTO_INCREMENT = 200000";
 					$queryResult = @mysql_query ($strSql, $dbConx);
 					if($queryResult)
 					{
@@ -114,7 +114,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 		 
 			if(@mysql_num_rows($queryResult) == NULL)
 			{
-				$strSql = "CREATE TABLE $tableName (sold_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				$strSql = "CREATE TABLE $tableName (sold_id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				cust_id INT NOT NULL,sold_item VARCHAR(50),sold_itemquan INT, INDEX pn_user_index(cust_id),
 				FOREIGN KEY(cust_id) REFERENCES sales(sales_id))";
 				$queryResult = @mysql_query($strSql, $dbConx);
@@ -125,7 +125,7 @@ $dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 				if($queryResult)
 				{
 					echo "<p>Table successfully created </p>";
-					$strSql = "ALTER TABLE sold AUTO_INCREMENT = 1000";
+					$strSql = "ALTER TABLE sold AUTO_INCREMENT = 1000000000";
 					$queryResult = @mysql_query ($strSql, $dbConx);
 					if($queryResult)
 					{
