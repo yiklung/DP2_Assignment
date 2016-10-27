@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <Title>Inventory</Title>
 <script>
 function check_empty()
@@ -35,17 +36,21 @@ function div_hide()
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
 	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
-<div class="side">
-	<ul id="side">
-		<li><a href="home.php">Home</a></li>
-		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href ="report.php">Report</a></li>
-		<li><a href="supply.php">Suppliers</a></li>
-		<li><a href="contact.php" class="last">Contact</a></li>
-	</ul>
-</div>
+<?php 
+include 'divside.php';
+?>
 <div class="body2"> 
+<script>
+	$(document).ready(function(){
+		$('table tr').click(function(){
+			$(this).addClass('selected').siblings().removeClass('selected');    
+			var value=$(this).find('td:first').next('td').next('td').next('td').html();
+			var nem=$(this).find('td:first').html();
+			
+			window.location.href ="modifyitem.php?id="+value+"&nem="+nem;
+		});
+	});
+</script>
 <h1> Inventory </h1>
 	<hr />
 	<br><br>
@@ -79,7 +84,7 @@ while($record = mysql_fetch_array($medata))
 	<br>
 	<br>
 	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new item </button> <!--Add Javascript here to open a popup window addsales.php-->
-	<a href="modifyitem.php" class="view">Modify item</a>
+	<p class="view">Click Any Item To Modify</a>
 </div>
 
 <div id = "poppy">

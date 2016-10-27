@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <Title>Sales Module</Title>
 
 <script>
@@ -14,7 +15,7 @@ function check_empty()
 	else
 	{
 		document.getElementById('form').submit();
-		alert("Form Submitted Successfully");
+		
 	}
 }
 
@@ -36,18 +37,24 @@ function div_hide()
 	<img></img>Welcome, &lt;User&gt; <!--Have php check if used is logged in-->
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
 	<img></img>&lt;Log Out&gt; <!--function required-->
+
 </div>
-<div class="side">
-	<ul id="side">
-		<li><a href="home.php">Home</a></li>
-		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href ="report.php">Report</a></li>
-		<li><a href="supply.php">Suppliers</a></li>
-		<li><a href="contact.php" class="last">Contact</a></li>
-	</ul>
-</div>
+<?php 
+include 'lownoti.php';
+include 'divside.php';
+?>
 <div class="body2"> 
+<script>
+	$(document).ready(function(){
+		$('table tr').click(function(){
+			$(this).addClass('selected').siblings().removeClass('selected');    
+			var value=$(this).find('td:first').next('td').next('td').html();
+			var nem=$(this).find('td:first').html();
+			
+			window.location.href ="modify.php?id="+value+"&nem="+nem;
+		});
+	});
+</script>
 <div id = "poppy">
  <div id ="popupContact">
  <form class ="form2" action ="sales.php" id = "form" method = "post" name = "form">
@@ -69,15 +76,15 @@ mysql_select_db($dbName,$dbConx);
 $sqlstr = "SELECT item_name FROM item";
 $medata = mysql_query($sqlstr,$dbConx);
 
-echo "<table><tr class ='itemchoose'><td class ='itemchoose'>Item 1 <select class = 'selectname' name ='select' id= 'select'>";
+echo "<class ='itemchoose'><td class ='itemchoose'>Item 1 <select class = 'selectname' name ='select' id= 'select'>";
 $option='';
 while($rs = mysql_fetch_array($medata))
 	{
 		$option.='<option value ="'.$rs["item_name"].'">'.$rs["item_name"].'</option>';
 	}
-	$option.='</select></td><td class ="itemchoose">';
+	$option.='</select>';
 	$option2 ='Quantity<select class ="valuenum" name ="value" id="value">';
-	$option3='<option value ="1">1</option><option value ="2">2</option><option value ="3">3</option><option value ="4">4</option><option value ="5">5</option></select></td></tr></table>';
+	$option3='<option value ="1">1</option><option value ="2">2</option><option value ="3">3</option><option value ="4">4</option><option value ="5">5</option></select>';
 echo $option;
 echo $option2;
 echo $option3;
@@ -117,47 +124,74 @@ echo $option3;
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-	
-	$name = $_POST["name"];
-	$date = $_POST["date"];
-	
-	$sqlstr = "INSERT INTO sales(sales_name,sales_date) VALUES
-	('$name','$date')";
-	mysql_query($sqlstr,$dbConx);
-	
-	$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
-	$medata = mysql_query($sqlstr,$dbConx);
-	
 	$solditem = $_POST["select"];
 	$soldquan = $_POST["value"];
 	
-	$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
-	VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem','$soldquan')";
-	mysql_query($sqlstr,$dbConx);
+	$sqlstr = "SELECT * FROM item WHERE item_name = '$solditem'";
+	$medata =mysql_query($sqlstr,$dbConx);
+	$rcditem = mysql_fetch_array($medata);
+	$rquan = $rcditem['item_stock'];
 	
-	$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan' 
-	WHERE item_name = '$solditem'";
-	mysql_query($sqlstr,$dbConx);
-	
-	$x=2;
-	while($x<=10)
-	{   
-        
-		@$solditem2 = $_POST["select".$x.""];
-		@$soldquan2 = $_POST["value".$x.""];
-		if(isset($solditem2))
-		{
+	if ($rquan +1 > $soldquan)
+	{
+		$name = $_POST["name"];
+		$date = $_POST["date"];
+		
+		$sqlstr = "INSERT INTO sales(sales_name,sales_date) VALUES
+		('$name','$date')";
+		mysql_query($sqlstr,$dbConx);
+		
+		$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
+		$medata = mysql_query($sqlstr,$dbConx);
+		
+		$solditem = $_POST["select"];
+		$soldquan = $_POST["value"];
+		
 		$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
-		VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem2','$soldquan2')";
+		VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem','$soldquan')";
 		mysql_query($sqlstr,$dbConx);
-		$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan2' 
-		WHERE item_name = '$solditem2'";
+		
+		$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan' 
+		WHERE item_name = '$solditem'";
 		mysql_query($sqlstr,$dbConx);
+		
+		$x=2;
+		while($x<=10)
+		{   
+			
+			@$solditem2 = $_POST["select".$x.""];
+			@$soldquan2 = $_POST["value".$x.""];
+			
+			
+			if(isset($solditem2))
+			{
+				$sqlstr = "SELECT * FROM item WHERE item_name = '$solditem2'";
+				$medata =mysql_query($sqlstr,$dbConx);
+				$rcditem = mysql_fetch_array($medata);
+				$rquan = $rcditem['item_stock'];
+				if ($rquan +1 > $soldquan2)
+				{
+					$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
+					VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem2','$soldquan2')";
+					mysql_query($sqlstr,$dbConx);
+					$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan2' 
+					WHERE item_name = '$solditem2'";
+					mysql_query($sqlstr,$dbConx);
+				}
+				else
+					{
+						echo "<script>alert('ERROR NOT ENOUGH ITEMS')</script>";
+					}
+			}
+			else{}
+			$x++;
 		}
-		else{}
-		$x++;
+		unset($_POST);
 	}
-	unset($_POST);
+	else
+	{
+		echo "<script>alert('ERROR NOT ENOUGH ITEMS')</script>";
+	}
 }
 else
 {
@@ -198,7 +232,7 @@ while($record = mysql_fetch_array($medata))
 	<br>
 	<br>
 	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php-->
-	<a href="modify.php" class="view">Modify Sales</a>
+	<p class="view">Click Any Record To Modify</a>
 	
 </div>
 <div class="btm">

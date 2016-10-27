@@ -25,20 +25,13 @@ function check_empty()
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
 	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
-<div class="side">
-	<ul id="side">
-		<li><a href="home.php">Home</a></li>
-		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href ="report.php">Report</a></li>
-		<li><a href="supply.php">Suppliers</a></li>
-		<li><a href="contact.php" class="last">Contact</a></li>
-	</ul>
-</div>>
+<?php 
+include 'divside.php';
+?>
 <div class="body2">
 <form class ="form2" action ="modify.php" id = "form" method = "post" name = "form">
- <input id = "saleid" name ="saleid" placeholder ="Sales ID" type = "text"> 
- <input id = "name" name ="name" placeholder ="Name" type = "text">
+ <input id = "saleid" name ="saleid" placeholder ="Sales ID" type = "text" value = "<?php echo $_GET['id'] ?>"> 
+ <input id = "name" name ="name" placeholder ="Name" type = "text" value ="<?php echo $_GET['nem'] ?>">
  <input id = "date" name ="date" placeholder = "Date" type ="date">
  <div id ="dynamicInput">
  <?php
@@ -107,8 +100,11 @@ if( isset( $_REQUEST['delethis'] ))
 	$medata = mysql_query($sqlstr,$dbConx);
 	while($recorditem = mysql_fetch_array($medata))
 	{
-		$sqlstr= "UPDATE item SET item_stock = ".$recorditem['sold_itemquan']." + item_stock
-		WHERE item_name = ".$recorditem['sold_item'];
+		$ritem = $recorditem['sold_itemquan'];
+		$rname = $recorditem['sold_item'];
+		$sqlstr= "UPDATE item
+		SET item_stock = item_stock + '$ritem' 
+		WHERE item_name = '$rname'";
 		mysql_query($sqlstr,$dbConx);
 	}
 	$sqlstr = "DELETE FROM sold WHERE cust_id='$saleid'";
@@ -116,72 +112,78 @@ if( isset( $_REQUEST['delethis'] ))
 	
 	$sqlstr = "DELETE FROM sales WHERE sales_id='$saleid'";
 	$medata = mysql_query($sqlstr,$dbConx);
+	header('Location: sales.php');
+
 }
 else
 {
-	
-}
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
-{
-	$saleid = $_POST["saleid"];
-	$name = $_POST["name"];
-	$date = $_POST["date"];
-	
-	$sqlstr = "SELECT * FROM sold WHERE cust_id ='$saleid'";
-	$medata = mysql_query($sqlstr,$dbConx);
-	while($recorditem = mysql_fetch_array($medata))
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
-		$sqlstr= "UPDATE item SET item_stock = item_stock +".$recorditem['sold_itemquan'].
-		"WHERE item_name =".$recorditem['sold_item'];
-		mysql_query($sqlstr,$dbConx);
-	}
-	
-	$sqlstr = "UPDATE sales SET sales_name ='$name',sales_date='$date'
-	WHERE sales_id = '$saleid'";
-	
-	mysql_query($sqlstr,$dbConx);
-	
-	$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
-	$medata = mysql_query($sqlstr,$dbConx);
-	
-	$sqlstr = "DELETE FROM sold WHERE cust_id='$saleid'";
-	$medata = mysql_query($sqlstr,$dbConx);
-	$solditem = $_POST["select"];
-	$soldquan = $_POST["value"];
-	
-	$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
-	VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem','$soldquan')";
-	mysql_query($sqlstr,$dbConx);
-	
-	$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan' 
-	WHERE item_name = '$solditem'";
-	mysql_query($sqlstr,$dbConx);
-	
-	$x=2;
-	while($x<=10)
-	{   
-        
-		@$solditem2 = $_POST["select".$x.""];
-		@$soldquan2 = $_POST["value".$x.""];
-		if(isset($solditem2))
+		$saleid = $_POST["saleid"];
+		$name = $_POST["name"];
+		$date = $_POST["date"];
+		
+		$sqlstr = "SELECT * FROM sold WHERE cust_id ='$saleid'";
+		$medata = mysql_query($sqlstr,$dbConx);
+		while($recorditem = mysql_fetch_array($medata))
 		{
-		$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
-		VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem2','$soldquan2')";
+			$ritem = $recorditem['sold_itemquan'];
+			$rname = $recorditem['sold_item'];
+			$sqlstr= "UPDATE item
+			SET item_stock = item_stock + '$ritem' 
+			WHERE item_name = '$rname'";
+			mysql_query($sqlstr,$dbConx);
+		}
+		
+		$sqlstr = "UPDATE sales SET sales_name ='$name',sales_date='$date'
+		WHERE sales_id = '$saleid'";
+		
 		mysql_query($sqlstr,$dbConx);
+		
+		$sqlstr = "SELECT sales_id FROM sales ORDER BY id LIMIT 1";
+		$medata = mysql_query($sqlstr,$dbConx);
+		
+		$sqlstr = "DELETE FROM sold WHERE cust_id='$saleid'";
+		$medata = mysql_query($sqlstr,$dbConx);
+		$solditem = $_POST["select"];
+		$soldquan = $_POST["value"];
+		
+		$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
+		VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem','$soldquan')";
+		mysql_query($sqlstr,$dbConx);
+		
 		$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan' 
 		WHERE item_name = '$solditem'";
 		mysql_query($sqlstr,$dbConx);
+		
+		$x=2;
+		while($x<=10)
+		{   
+			
+			@$solditem2 = $_POST["select".$x.""];
+			@$soldquan2 = $_POST["value".$x.""];
+			if(isset($solditem2))
+			{
+			$sqlstr = "INSERT INTO sold (cust_id,sold_item,sold_itemquan)
+			VALUES ((SELECT sales_id FROM sales WHERE sales_name ='$name' AND sales_date='$date'),'$solditem2','$soldquan2')";
+			mysql_query($sqlstr,$dbConx);
+			$sqlstr = "UPDATE item SET item_stock = item_stock - '$soldquan' 
+			WHERE item_name = '$solditem'";
+			mysql_query($sqlstr,$dbConx);
+			}
+			else{}
+			$x++;
 		}
-		else{}
-		$x++;
+		header('Location: sales.php');
+		unset($_POST);
 	}
-	header('Location: sales.php');
-	unset($_POST);
+	else
+	{
+		
+	}
+		
 }
-else
-{
-	
-}
+
 ?>
 
 <div class="btm">

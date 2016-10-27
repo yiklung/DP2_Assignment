@@ -25,20 +25,13 @@ function check_empty()
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
 	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
-<div class="side">
-	<ul id="side">
-		<li><a href="home.php">Home</a></li>
-		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href ="report.php">Report</a></li>
-		<li><a href="supply.php">Suppliers</a></li>
-		<li><a href="contact.php" class="last">Contact</a></li>
-	</ul>
-</div>
+<?php 
+include 'divside.php';
+?>
 <div class="body2">
 <form class ="form2" action ="modifyitem.php" id = "form" method = "post" name = "form">
- <input id = "itemid" name ="itemid" placeholder ="Item ID" type = "text"> 
- <input id = "name" name ="name" placeholder ="Item Name" type = "text">
+ <input id = "itemid" name ="itemid" placeholder ="Item ID" type = "text" value = "<?php echo $_GET['id'] ?>"> 
+ <input id = "name" name ="name" placeholder ="Item Name" type = "text" value ="<?php echo $_GET['nem'] ?>">
  <input id = "stock" name ="stock" placeholder = "Stock" type ="number">
  <input id = "price" name ="price" placeholder = "Price" type ="number">
  <div id ="dynamicInput">

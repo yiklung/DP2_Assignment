@@ -14,16 +14,10 @@ include 'databasecreate.php';
 	<img></img>&lt;Date&gt; <!--Use .js get today's date -->
 	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
-<div class="side">
-	<ul id="side">
-		<li><a href="home.php">Home</a></li>
-		<li><a href="sales.php">Sales</a></li>
-		<li><a href="item.php">Inventory</a></li>
-		<li><a href ="report.php">Report</a></li>
-		<li><a href="supply.php">Suppliers</a></li>
-		<li><a href="contact.php" class="last">Contact</a></li>
-	</ul>
-</div>
+<?php 
+include 'lownoti.php';
+include 'divside.php';
+?>
 <div class="body2"> 
 <h1> Welcome To People Health Pharmacy Sales Reporting System </h1>
 <h2> Please ensure that Items are added into Inventory before adding sales record </h2>
