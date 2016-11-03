@@ -3,10 +3,12 @@ div.side{
 	position:relative;
 	width:18%;
 	min-height:90%;
+	height: 100%;
 	float:left;
 	margin-right: 25px;
 	background:#6E757C;
 }
+
 #side a {
 	color: #FFFFFF;
 	display: block;
@@ -93,6 +95,7 @@ body{
 	background-image:url(img/background.png);
 	padding:auto;
 	margin:auto;
+	height: 100vh;
 	font-family: Tahoma, Geneva, sans-serif;
 }
 

@@ -97,18 +97,42 @@ include 'divside.php';
 					
 				}
 				echo "</tr>";
-			$ttlallquan = $ttlallquan +$ttlquan;
+			$ttlallquan = $ttlallquan + $ttlquan;
 			$ttlallprice = $ttlallprice + $ttlprice;
 		}
 		
 		echo "<h3>Total Quantity of Items Sold Within The Date: ".$ttlallquan."</h3><h3>".
 		"Total Price of Sold Item: ".$ttlallprice."</h3>";
+		
+		$filename = 'D:/orders.csv';
+		if (file_exists($filename)) {
+			unlink($filename);
+		}
+		
+		$result = mysql_query('
+			
+		SELECT s.sales_name, s.sales_date, s.sales_id, ss.sold_item, ss.sold_itemquan
+		FROM sales s
+		LEFT JOIN sold ss ON s.sales_id = ss.cust_id
+			
+		INTO OUTFILE \'D:/orders.csv\'
+		FIELDS TERMINATED BY \',\'
+		ENCLOSED BY \'"\'
+		LINES TERMINATED BY \'\r\n\'
+		');
+		
+		if (!$result) {
+			die('Invalid query: ' . mysql_error());
+		}
+		else {
+			echo "Report generated in D:\orders.csv <br>";
+		}
 		}
 		
 		?>
+		
 		</tbody>
 		</table>
-	
 	<br><br>
 	<h2> All Daily Report </h2>
 	<table>
