@@ -39,10 +39,10 @@ function div_hide()
 <?php 
 include 'divside.php';
 ?>
-<div class="body2"> 
+
 <script>
 	$(document).ready(function(){
-		$('table tr').click(function(){
+		$('table tbody tr').click(function(){
 			$(this).addClass('selected').siblings().removeClass('selected');    
 			var value=$(this).find('td:first').next('td').next('td').next('td').html();
 			var nem=$(this).find('td:first').html();
@@ -54,13 +54,16 @@ include 'divside.php';
 <h1> Inventory </h1>
 	<hr />
 	<br><br>
-	<table>
-	<tr><td> Item Name: </td>
-	<td> Item Quantity: </td>
-	<td> Item Price: </td>
-	<td> Item ID </td>
+	<table class="selectable">
+	<thead>
+	<tr>
+		<th> Item Name: </th>
+		<th> Item Quantity: </th>
+		<th> Item Price: </th>
+		<th> Item ID </th>
 	</tr>
-	
+	</thead>
+	<tbody>
 <?php
 $dbServer='localhost';
 $dbUserName = 'root';
@@ -80,6 +83,7 @@ while($record = mysql_fetch_array($medata))
 		echo "</tr>";
 }
 ?>
+	</tbody>
 	</table>
 	<br>
 	<br>
@@ -98,7 +102,7 @@ while($record = mysql_fetch_array($medata))
  <input id = "price" name ="price" placeholder = "Price" type ="number">
  <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save </a>
  </form>
- </div>
+
 </div>
 <?php
 

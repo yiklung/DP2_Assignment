@@ -28,11 +28,14 @@ function check_empty()
 <?php 
 include 'divside.php';
 ?>
-<div class="body2">
+<br/>
 <form class ="form2" action ="modify.php" id = "form" method = "post" name = "form">
+ <h1>Modify Sales</h1>
+ <hr /><br />
  <input id = "saleid" name ="saleid" placeholder ="Sales ID" type = "text" value = "<?php echo $_GET['id'] ?>"> 
  <input id = "name" name ="name" placeholder ="Name" type = "text" value ="<?php echo $_GET['nem'] ?>">
  <input id = "date" name ="date" placeholder = "Date" type ="date">
+  <br /> <br />
  <div id ="dynamicInput">
  <?php
 $dbServer='localhost';
@@ -45,19 +48,19 @@ mysql_select_db($dbName,$dbConx);
 $sqlstr = "SELECT item_name FROM item";
 $medata = mysql_query($sqlstr,$dbConx);
 
-echo "<table><tr class ='itemchoose'><td class ='itemchoose'>Item 1 <select class = 'selectname' name ='select' id= 'select'>";
-$option='';
-while($rs = mysql_fetch_array($medata))
-	{
-		$option.='<option value ="'.$rs["item_name"].'">'.$rs["item_name"].'</option>';
-	}
-	$option.='</select></td><td class ="itemchoose">';
-	$option2 ='Quantity<select class ="valuenum" name ="value" id="value">';
-	$option3='<option value ="1">1</option><option value ="2">2</option><option value ="3">3</option><option value ="4">4</option><option value ="5">5</option></select></td></tr></table>';
-echo $option;
-echo $option2;
-echo $option3;
-
+echo "<table>
+	<tr class ='itemchoose'><td class ='itemchoose'>Item 1 <select class = 'selectname' name ='select' id= 'select'>";
+	$option='';
+	while($rs = mysql_fetch_array($medata))
+		{
+			$option.='<option value ="'.$rs["item_name"].'">'.$rs["item_name"].'</option>';
+		}
+		$option.='</select></td><td class ="itemchoose">';
+		$option2 ='Quantity<select class ="valuenum" name ="value" id="value">';
+		$option3='<option value ="1">1</option><option value ="2">2</option><option value ="3">3</option><option value ="4">4</option><option value ="5">5</option></select></td></tr></table>';
+	echo $option;
+	echo $option2;
+	echo $option3;
 
  ?>
  
@@ -90,7 +93,7 @@ echo $option3;
  <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save Changes </a>
  <input type = "submit" value = "Delete" id = "delethis" name = "delethis" class ="delet">
  </form>
-</div>
+
 
 <?php
 if( isset( $_REQUEST['delethis'] ))

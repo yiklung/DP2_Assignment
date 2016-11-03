@@ -16,9 +16,9 @@
 include 'lownoti.php';
 include 'divside.php';
 ?>
-<div class="body2"> 
+ 
 <h1>THIS FUNCTION IS UNDER DEVELOPMENT</h1>
-</div>
+
 <div class="btm">
  &lt; Footer &gt; <!--Change to include student IDs?-->
 </div>

@@ -28,18 +28,21 @@ function check_empty()
 <?php 
 include 'divside.php';
 ?>
-<div class="body2">
+
+<br />
 <form class ="form2" action ="modifyitem.php" id = "form" method = "post" name = "form">
+	<h1>Modify Item</h1>
+	<hr /><br />
  <input id = "itemid" name ="itemid" placeholder ="Item ID" type = "text" value = "<?php echo $_GET['id'] ?>"> 
  <input id = "name" name ="name" placeholder ="Item Name" type = "text" value ="<?php echo $_GET['nem'] ?>">
  <input id = "stock" name ="stock" placeholder = "Stock" type ="number">
  <input id = "price" name ="price" placeholder = "Price" type ="number">
+ <br /> <br />
  <div id ="dynamicInput">
- 
  <a href="javascript:%20check_empty()" id = "submitadd" name = "submitadd" class ="add"> Save Changes </a>
  <input type = "submit" value = "Delete" id = "delethis" name = "delethis" class ="delet">
  </form>
-</div>
+
 
 <?php
 $dbServer='localhost';

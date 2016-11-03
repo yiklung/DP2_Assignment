@@ -5,30 +5,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <Title>Sales Module</Title>
 
-<script>
-function check_empty()
-{
-	if (document.getElementById('name').value == "" || document.getElementById('date').value == "")
+	<script>
+	function check_empty()
 	{
-		alert ("Fill All Fields");
+		if (document.getElementById('name').value == "" || document.getElementById('date').value == "")
+		{
+			alert ("Fill All Fields");
+		}
+		else
+		{
+			document.getElementById('form').submit();
+			
+		}
 	}
-	else
+
+	function div_show()
 	{
-		document.getElementById('form').submit();
-		
+		document.getElementById('poppy').style.display = "block";
 	}
-}
+	function div_hide()
+	{
+		document.getElementById('poppy').style.display = "none";
+	}
 
-function div_show()
-{
-	document.getElementById('poppy').style.display = "block";
-}
-function div_hide()
-{
-	document.getElementById('poppy').style.display = "none";
-}
-
- </script>
+	 </script>
 
 </head>
 <body>
@@ -43,10 +43,9 @@ function div_hide()
 include 'lownoti.php';
 include 'divside.php';
 ?>
-<div class="body2"> 
 <script>
 	$(document).ready(function(){
-		$('table tr').click(function(){
+		$('table tbody tr').click(function(){
 			$(this).addClass('selected').siblings().removeClass('selected');    
 			var value=$(this).find('td:first').next('td').next('td').html();
 			var nem=$(this).find('td:first').html();
@@ -201,40 +200,44 @@ else
 	<h1> Sales </h1>
 	<hr />
 	<br><br>
-	<table>
-	<tr><td> Customer Name: </td>
-	<td> Date: </td>
-	<td> Sales ID: </td>
-	<td> Item/Quantity ---> </td>
-	</tr>
 	
-<?php
-$sqlstr = "SELECT * FROM sales";
-$medata = mysql_query($sqlstr,$dbConx);
-while($record = mysql_fetch_array($medata))
-{
-		echo "<tr><td>".$record['sales_name']."</td>";
-		echo "<td>".$record['sales_date']."</td>";
-		echo "<td>".$record['sales_id']."</td>";
-		$sqlitem = "SELECT * FROM sold WHERE cust_id =".$record['sales_id'];
-		$datatwo = mysql_query($sqlitem,$dbConx);
-		while($recorditem = mysql_fetch_array($datatwo))
-		{	
-			
-			echo "<td>".$recorditem['sold_item']."</td>";
-			echo "<td>".$recorditem['sold_itemquan']."</td>";
-			
-		}
-		echo "</tr>";
-}
-?>
+	<table class="selectable">
+		<thead>
+			<tr>
+				<th> Customer Name: </th>
+				<th> Date: </th>
+				<th> Sales ID: </th>
+				<th> Item/Quantity ---> </th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$sqlstr = "SELECT * FROM sales";
+			$medata = mysql_query($sqlstr,$dbConx);
+			while($record = mysql_fetch_array($medata))
+			{
+					echo "<tr><td>".$record['sales_name']."</td>";
+					echo "<td>".$record['sales_date']."</td>";
+					echo "<td>".$record['sales_id']."</td>";
+					$sqlitem = "SELECT * FROM sold WHERE cust_id =".$record['sales_id'];
+					$datatwo = mysql_query($sqlitem,$dbConx);
+					while($recorditem = mysql_fetch_array($datatwo))
+					{	
+						
+						echo "<td>".$recorditem['sold_item']."</td>";
+						echo "<td>".$recorditem['sold_itemquan']."</td>";
+						
+					}
+					echo "</tr>";
+			}
+			?>
+		</tbody>
 	</table>
 	<br>
 	<br>
 	<button type="button" class="add" id="popup" onclick = "div_show()"> Add new sale </button> <!--Add Javascript here to open a popup window addsales.php-->
 	<p class="view">Click Any Record To Modify</a>
-	
-</div>
+
 <div class="btm">
  &lt; Footer &gt; <!--Change to include student IDs?-->
 </div>
