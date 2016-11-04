@@ -13,7 +13,16 @@
 	<img></img>&lt;Log Out&gt; <!--function required-->
 </div>
 <?php 
-include 'divside.php';
+	include 'divside.php';
+	$dbServer='localhost';
+	$dbUserName = 'root';
+	$dbPassword = '';
+	$dbName = 'srsphp';
+	$dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
+	@mysql_select_db($dbName,$dbConx);
+	$date = date("Y-m-d");
+	$name = "C:\\" . $date . ".csv";
+	$location = (string)$name;
 ?>
 
 
@@ -38,9 +47,15 @@ include 'divside.php';
 		<p> Generate from Date 1 until Date 2 </p>
 		Date 1 <input id = "date1" name = "date1" placeholder ="Date 1" type = "date">
 		Date 2 <input id = "date2" name = "date2" placeholder ="Date 2" type = "date">
-		&nbsp; <input type = "submit" value = "Generate" name = "submit">
-		<br />	<br />
+		&nbsp; <input type = "submit" id="day" value = "Generate" name = "submit">
+		<br> <br>
+		Save As: <br>
+		<input id = "location" name = "location" type = "text" value="<?php echo htmlentities($location);?>">
+		&nbsp; <input type = "submit" id="exportday" value = "Export by Day" name = "exportday">
+		&nbsp; <input type = "submit" id="exportall" value = "Export All" name = "exportall">
+		<br><br>
 		</form>
+		
 		
 		<?php
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -55,7 +70,8 @@ include 'divside.php';
 		$date2 = $_POST["date2"];
 		$sqlstr = "SELECT * FROM sales WHERE sales_date >= '$date1' AND sales_date <= '$date2'";
 		$medata = mysql_query($sqlstr,$dbConx);
-		
+		$name = $date1 . " to " . $date2 . ".csv";
+		$location = (string)$name;
 		$ttlallquan = 0;
 		$ttlallprice = 0;
 		
@@ -104,31 +120,63 @@ include 'divside.php';
 		echo "<h3>Total Quantity of Items Sold Within The Date: ".$ttlallquan."</h3><h3>".
 		"Total Price of Sold Item: ".$ttlallprice."</h3>";
 		
-		$filename = 'D:/orders.csv';
-		if (file_exists($filename)) {
-			unlink($filename);
 		}
-		
-		$result = mysql_query('
+		?>
+		<?php
+		if(isset( $_REQUEST['exportday']))
+		{
+			$location = str_replace("\\", "/", $name);
 			
-		SELECT s.sales_name, s.sales_date, s.sales_id, ss.sold_item, ss.sold_itemquan
-		FROM sales s
-		LEFT JOIN sold ss ON s.sales_id = ss.cust_id
+			if (file_exists($location)) {
+				unlink($location);
+				echo 'Existing file overwritten';
+			}
+			$result = mysql_query("
+			SELECT s.sales_name, s.sales_date, s.sales_id, ss.sold_item, ss.sold_itemquan
+			FROM sales s
+			LEFT JOIN sold ss ON s.sales_id = ss.cust_id
+			WHERE s.sales_date >= '$date1' AND s.sales_date <= '$date2'
 			
-		INTO OUTFILE \'D:/orders.csv\'
-		FIELDS TERMINATED BY \',\'
-		ENCLOSED BY \'"\'
-		LINES TERMINATED BY \'\r\n\'
-		');
-		
-		if (!$result) {
-			die('Invalid query: ' . mysql_error());
+			INTO OUTFILE '$location'
+			FIELDS TERMINATED BY ','
+			ENCLOSED BY '\"'
+			LINES TERMINATED BY '\r\n'
+			");
+			
+			if (!$result) {
+				die('Invalid query: ' . mysql_error());
+			}
+			else {
+				echo "Report generated in" . $location . "<br>";
+			}
 		}
-		else {
-			echo "Report generated in D:\orders.csv <br>";
+		else if(isset( $_REQUEST['exportall'] )) {
+	
+			$location = str_replace("\\", "/", $name);
+			
+			if (file_exists($location)) {
+				unlink($location);
+				echo 'Existing file overwritten';
+			}
+			
+			$result = mysql_query("
+			SELECT s.sales_name, s.sales_date, s.sales_id, ss.sold_item, ss.sold_itemquan
+			FROM sales s
+			LEFT JOIN sold ss ON s.sales_id = ss.cust_id
+			
+			INTO OUTFILE '$location'
+			FIELDS TERMINATED BY ','
+			ENCLOSED BY '\"'
+			LINES TERMINATED BY '\r\n'
+			");
+			
+			if (!$result) {
+				die('Invalid query: ' . mysql_error());
+			}
+			else {
+				"Report generated in" . $location . "<br>";
+			}
 		}
-		}
-		
 		?>
 		
 		</tbody>
@@ -172,8 +220,8 @@ include 'divside.php';
 					$slditm = $recorditem['sold_item'];
 					$sldquan = $recorditem['sold_itemquan'];
 					$sql = "SELECT * FROM item WHERE item_name =" .$slditm;
-					$datathree = mysql_query($sql,$dbConx);
-					$datree = mysql_fetch_array($datathree);
+					$datathree = @mysql_query($sql,$dbConx);
+					$datree = @mysql_fetch_array($datathree);
 					
 					$itmprice = $datree['item_price'];
 					
