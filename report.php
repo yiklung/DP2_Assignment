@@ -20,7 +20,7 @@
 	$dbName = 'srsphp';
 	$dbConx = @mysql_connect($dbServer,$dbUserName,$dbPassword);
 	@mysql_select_db($dbName,$dbConx);
-	$date = date("Y-m-d");
+	$date = date("Y_m_d");
 	$name = "C:\\" . $date . ".csv";
 	$location = (string)$name;
 ?>
@@ -49,7 +49,7 @@
 		Date 2 <input id = "date2" name = "date2" placeholder ="Date 2" type = "date">
 		&nbsp; <input type = "submit" id="day" value = "Generate" name = "submit">
 		<br> <br>
-		Save As: <br>
+		<b>Save As:</b> (Please export as CSV, Example: C:\FILENAME.csv) <br>
 		<input id = "location" name = "location" type = "text" value="<?php echo htmlentities($location);?>">
 		&nbsp; <input type = "submit" id="exportday" value = "Export by Day" name = "exportday">
 		&nbsp; <input type = "submit" id="exportall" value = "Export All" name = "exportall">
@@ -70,8 +70,8 @@
 		$date2 = $_POST["date2"];
 		$sqlstr = "SELECT * FROM sales WHERE sales_date >= '$date1' AND sales_date <= '$date2'";
 		$medata = mysql_query($sqlstr,$dbConx);
-		$name = $date1 . " to " . $date2 . ".csv";
-		$location = (string)$name;
+		$name = $_POST["location"];
+		$location = str_replace("\\", "/", $name);
 		$ttlallquan = 0;
 		$ttlallprice = 0;
 		
@@ -121,16 +121,14 @@
 		"Total Price of Sold Item: ".$ttlallprice."</h3>";
 		
 		}
-		?>
-		<?php
+		
 		if(isset( $_REQUEST['exportday']))
 		{
-			$location = str_replace("\\", "/", $name);
-			
 			if (file_exists($location)) {
-				unlink($location);
-				echo 'Existing file overwritten';
+				echo 'Duplicate detected. ';
+				$location = substr_replace($location, '(1)', ((strlen($location))-4), 0);
 			}
+			
 			$result = mysql_query("
 			SELECT s.sales_name, s.sales_date, s.sales_id, ss.sold_item, ss.sold_itemquan
 			FROM sales s
@@ -147,16 +145,15 @@
 				die('Invalid query: ' . mysql_error());
 			}
 			else {
-				echo "Report generated in" . $location . "<br>";
+				$location = str_replace("/", "\\", $name);
+				echo "Report generated in " . $location . "<br>";
 			}
 		}
 		else if(isset( $_REQUEST['exportall'] )) {
-	
-			$location = str_replace("\\", "/", $name);
 			
 			if (file_exists($location)) {
-				unlink($location);
-				echo 'Existing file overwritten';
+				echo 'Duplicate detected. ';
+				$location = substr_replace($location, '(1)', ((strlen($location))-4), 0);
 			}
 			
 			$result = mysql_query("
@@ -174,7 +171,8 @@
 				die('Invalid query: ' . mysql_error());
 			}
 			else {
-				"Report generated in" . $location . "<br>";
+				$location = str_replace("/", "\\", $name);
+				echo "Report generated in " . $location . ".<br>";
 			}
 		}
 		?>
